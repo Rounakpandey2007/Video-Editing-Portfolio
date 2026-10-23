@@ -39,7 +39,7 @@ nav ul a{opacity:.85}nav ul a:hover{opacity:1}
 .hero-grid{position:relative;z-index:2;width:100%}
 .hero h1{font-size:clamp(3.4rem,11.5vw,10rem);font-weight:800;line-height:.92;letter-spacing:-.035em;margin:6px 0 40px}
 .hero .hey{font-size:clamp(1.1rem,2vw,1.6rem);font-weight:400}
-.tag{position:absolute;right:28px;bottom:150px;max-width:340px;z-index:3}
+.tag{position:absolute;right:28px;bottom:175px;max-width:340px;z-index:3}
 .tag h2{font-size:1.7rem;font-weight:500;line-height:1.25;margin-bottom:12px}
 .tag p{font-size:.92rem;color:var(--mute)}
 .skills{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:10px;position:relative;z-index:3}
@@ -107,20 +107,47 @@ section{padding:110px 0}
 .links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 footer{text-align:center;padding:26px;color:var(--mute);font-size:.8rem;background:#0b0302}
 
+.menu{display:none;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(0,0,0,.25);color:#fff;cursor:pointer;place-items:center;font-size:1.2rem}
+.hint{display:none;font-weight:400;font-size:.8rem;color:var(--mute);margin-left:8px}
 @media(max-width:900px){
-  nav{padding:18px 20px}nav ul{display:none}
-  .hero{padding-bottom:40px;padding-top:110px;display:flex;flex-direction:column;justify-content:flex-end}
-  .photo img{object-position:72% center}
-  .hero h1{margin-bottom:10px}
-  .tag{position:relative;right:auto;bottom:auto;margin:20px 28px}
-  .photo-empty{right:auto;left:50%;transform:translateX(-50%);top:30%}
-  .skills{grid-template-columns:repeat(2,1fr);padding:0 28px}
-  .about .cols,.box-head,.vids{grid-template-columns:1fr}
-  .vids.portrait{max-width:340px;margin:0 auto}
-  .row{grid-template-columns:40px 1fr;}
+  .wrap{padding:0 20px}
+  nav{padding:14px 18px;gap:10px}
+  nav .logo{margin-right:auto}
+  .menu{display:grid}
+  nav .pill{padding:10px 18px}
+  nav ul{display:none;position:absolute;top:68px;left:16px;right:16px;flex-direction:column;gap:0;background:rgba(20,6,5,.94);
+    backdrop-filter:blur(10px);border-radius:20px;padding:8px;border:1px solid var(--line)}
+  nav ul.open{display:flex}
+  nav ul a{display:block;padding:14px 16px;font-size:1rem}
+  .hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:56svh 0 32px}
+  .hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(20,4,2,.72))}
+  .photo img{object-position:50% top}
+  .hero h1{margin:4px 0 18px}
+  .tag{position:relative;right:auto;bottom:auto;max-width:none;margin:0;padding:0 20px}
+  .tag h2{font-size:1.4rem}
+  .skills{grid-template-columns:repeat(2,1fr);gap:16px;padding:0;margin-top:28px}
+  .photo-empty{right:auto;left:50%;transform:translateX(-50%);top:14%;width:220px}
+  section{padding:72px 0}
+  .about .cols{grid-template-columns:1fr;gap:30px}
+  .stats b{font-size:1.6rem}
+  .box{padding:22px 16px;border-radius:26px;margin-top:30px}
+  .box-head{grid-template-columns:1fr;gap:20px}
+  .box-head h3{font-size:1.5rem}
+  .vids{grid-template-columns:repeat(2,1fr);gap:16px}
+  .vids.portrait{grid-template-columns:repeat(3,1fr);max-width:none;margin:0}
+  .vid p{border-radius:20px}
+  .row{grid-template-columns:40px 1fr;gap:6px 16px;padding:22px 0}
+  .row h4{font-size:1.15rem}
   .row p,.row a{grid-column:2}
-  .box{padding:24px;border-radius:26px}
-  section{padding:80px 0}
+  .row a{justify-self:start;margin-top:8px}
+}
+@media(max-width:600px){
+  .hero h1{font-size:clamp(4rem,23vw,7rem)}
+  .vids{grid-template-columns:1fr}
+  .hint{display:inline}
+  .vids.portrait{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;margin:0 -16px;padding:0 16px 10px;-webkit-overflow-scrolling:touch}
+  .vids.portrait .vid{flex:0 0 70%;scroll-snap-align:center}
+  .links .pill{width:100%;text-align:center}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
@@ -129,14 +156,18 @@ footer{text-align:center;padding:26px;color:var(--mute);font-size:.8rem;backgrou
 
 <nav>
   <a class="logo" href="#top">ROUNAK</a>
-  <ul><li><a href="#about">About</a></li><li><a href="#ae">After Effects</a></li><li><a href="#cinematic">Cinematic</a></li><li><a href="#work">Work</a></li></ul>
+  <ul id="navlinks"><li><a href="#about">About</a></li><li><a href="#ae">After Effects</a></li><li><a href="#cinematic">Cinematic</a></li><li><a href="#work">Work</a></li></ul>
   <a class="pill" href="#contact">Get in touch</a>
+  <button class="menu" id="menu" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
 </nav>
 
 <header class="hero" id="top">
   <div class="photo" id="photo">
-    <!-- 👉 Put your photo in the same folder and name it hero.png (or change the src) -->
-    <img id="heroImg" src="hero.png" alt="Portrait of the editor">
+    <!-- 👉 hero.png = laptop/desktop photo, hero1.png = phone photo (screens up to 900px wide) -->
+    <picture>
+      <source id="heroPhone" media="(max-width:900px)" srcset="hero1.png">
+      <img id="heroImg" src="hero.png" alt="Portrait of the editor">
+    </picture>
   </div>
   <div class="wrap hero-grid">
     <p class="hey">Hey, I'm a</p>
@@ -192,7 +223,7 @@ footer{text-align:center;padding:26px;color:var(--mute);font-size:.8rem;backgrou
         </div>
       </div>
       <div class="vids" id="vids"></div>
-      <h4 class="sub">Portrait edits (9:16)</h4>
+      <h4 class="sub">Portrait edits (9:16) <span class="hint">swipe →</span></h4>
       <div class="vids portrait" id="vidsP"></div>
     </div>
   </div>
@@ -242,28 +273,25 @@ footer{text-align:center;padding:26px;color:var(--mute);font-size:.8rem;backgrou
 
 <script>
 /* ============ EDIT YOUR CONTENT HERE ============ */
-// Put video files next to this file and add their names in src (e.g. "video1.mp4").
+// Put video files next to this file and add their names in src (e.g. "Video1.mp4").
 const AE_VIDEOS = [
-  { src:"Video1.mp4", title:"Camera Tracking", desc:'<a href="https://www.instagram.com/reel/Dbs3b0jt62B/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" target="_blank">Click to watch on Instagram</a>' },
-  { src:"Video2.mp4", title:"3D Camera Tracking", desc:'<a href="https://www.instagram.com/reel/DdTyTw_tJmx/?utm_source=ig_web_copy_link&stkn=NTc4MTIwNjQ2YQ==" target="_blank">Click to watch on Instagram</a>' },
-  { src:"Video3.mp4", title:"Camera Tracking", desc:'<a href="https://www.instagram.com/reel/Db5s7YbB7RM/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" target="_blank">Click to watch on Instagram</a>' }
+  { src:"Video1.mp4", title:"Camera Tracking", desc:'<a href="https://www.instagram.com/reel/Dbs3b0jt62B/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" target="_blank" rel="noopener">Click to watch on Instagram</a>' },
+  { src:"Video2.mp4", title:"3D Camera Tracking", desc:'<a href="https://www.instagram.com/reel/DdTyTw_tJmx/?utm_source=ig_web_copy_link&stkn=NTc4MTIwNjQ2YQ==" target="_blank" rel="noopener">Click to watch on Instagram</a>' },
+  { src:"Video3.mp4", title:"Camera Tracking", desc:'<a href="https://www.instagram.com/reel/Db5s7YbB7RM/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" target="_blank" rel="noopener">Click to watch on Instagram</a>' }
 ];
 const AE_PORTRAIT = [
-  { src:"Video4.mp4", title:"3D Camera Tracking", desc:'<a href="https://www.instagram.com/reel/Ddtim77tXla/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" target="_blank">Click to watch on Instagram</a>' },
-  { src:"Video5.mp4", title:"Ai Story Editing", desc:'<a href="https://www.instagram.com/reel/Dc8wXaTBLDg/?utm_source=ig_web_copy_link&stkn=NTc4MTIwNjQ2YQ==" target="_blank">Click to watch on Instagram</a>' },
-  { src:"Video6.mp4", title:"Car SpeedRamp", desc:'<a href="https://www.instagram.com/reel/DapXEDisXcV/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" target="_blank">Click to watch on Instagram</a>' }
+  { src:"Video4.mp4", title:"3D Camera Tracking", desc:'<a href="https://www.instagram.com/reel/Ddtim77tXla/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" target="_blank" rel="noopener">Click to watch on Instagram</a>' },
+  { src:"Video5.mp4", title:"Ai Story Editing", desc:'<a href="https://www.instagram.com/reel/Dc8wXaTBLDg/?utm_source=ig_web_copy_link&stkn=NTc4MTIwNjQ2YQ==" target="_blank" rel="noopener">Click to watch on Instagram</a>' },
+  { src:"Video6.mp4", title:"Car SpeedRamp", desc:'<a href="https://www.instagram.com/reel/DapXEDisXcV/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" target="_blank" rel="noopener">Click to watch on Instagram</a>' }
 ];
-// Color grading & cinematic: landscape videos named cinematic1.mp4 ... cinematic6.mp4
-// const CINEMATIC = [1,2,3,4,5,6].map(n => ({
-//   src:"cinematic"+n+".mp4", title:"Cinematic "+n, desc:"Color grade / cinematic edit"
-// }));
+// Color grading & cinematic: landscape videos
 const CINEMATIC = [
-  { src:"Video7.mp4", title:"Cinematic 1", desc:'<a href="https://www.instagram.com/reel/DZQFJo3T88k/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" target="_blank">Click to watch on Instagram</a>' },
-  { src:"Video8.mp4", title:"Cinematic 2", desc:'<a href="https://www.instagram.com/reel/Dbw9xkzxfAc/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" target="_blank">Click to watch on Instagram</a>' },
-  { src:"Video9.mp4", title:"Cinematic 3", desc:'<a href="https://www.instagram.com/reel/DblMlz-trJb/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" target="_blank">Click to watch on Instagram</a>' },
-  { src:"Video10.mp4", title:"Cinematic 4", desc:'<a href="https://www.instagram.com/reel/DZAMtwthP8f/?utm_source=ig_web_copy_link&stkn=NTc4MTIwNjQ2YQ==" target="_blank">Click to watch on Instagram</a>' },
-  { src:"Video11.mp4", title:"Cinematic 5", desc:'<a href="https://www.instagram.com/reel/Db2EI7tRYxu/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" target="_blank">Click to watch on Instagram</a>' },
-  { src:"Video12.mp4", title:"Cinematic 6", desc:'<a href="https://www.instagram.com/reel/Dcqne-ah2Kz/?utm_source=ig_web_copy_link&stkn=NTc4MTIwNjQ2YQ==" target="_blank">Click to watch on Instagram</a>' },
+  { src:"Video7.mp4", title:"Cinematic 1", desc:'<a href="https://www.instagram.com/reel/DZQFJo3T88k/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" target="_blank" rel="noopener">Click to watch on Instagram</a>' },
+  { src:"Video8.mp4", title:"Cinematic 2", desc:'<a href="https://www.instagram.com/reel/Dbw9xkzxfAc/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" target="_blank" rel="noopener">Click to watch on Instagram</a>' },
+  { src:"Video9.mp4", title:"Cinematic 3", desc:'<a href="https://www.instagram.com/reel/DblMlz-trJb/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" target="_blank" rel="noopener">Click to watch on Instagram</a>' },
+  { src:"Video10.mp4", title:"Cinematic 4", desc:'<a href="https://www.instagram.com/reel/DZAMtwthP8f/?utm_source=ig_web_copy_link&stkn=NTc4MTIwNjQ2YQ==" target="_blank" rel="noopener">Click to watch on Instagram</a>' },
+  { src:"Video11.mp4", title:"Cinematic 5", desc:'<a href="https://www.instagram.com/reel/Db2EI7tRYxu/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" target="_blank" rel="noopener">Click to watch on Instagram</a>' },
+  { src:"Video12.mp4", title:"Cinematic 6", desc:'<a href="https://www.instagram.com/reel/Dcqne-ah2Kz/?utm_source=ig_web_copy_link&stkn=NTc4MTIwNjQ2YQ==" target="_blank" rel="noopener">Click to watch on Instagram</a>' }
 ];
 const CIN_SKILLS = ["Color grading","Cinematic cuts","Film looks","Mood & tone","Dynamic Editing","Storytelling"];
 const AE_SKILLS = ["Speed ramps","Text animation","Smooth transitions","Cinematic car edits","Motion graphics","Logo reveals"];
@@ -275,7 +303,7 @@ document.getElementById('chips').innerHTML = AE_SKILLS.map(s=>`<span>${s}</span>
 
 /* Hero photo: if hero.png is missing, show an upload box (preview only) */
 const heroImg = document.getElementById('heroImg');
-heroImg.addEventListener('error', () => {
+function heroFallback(){
   const box = document.createElement('div');
   box.className = 'photo-empty';
   box.innerHTML = '<p>Add your photo as <b>hero.png</b><br>or preview one here</p><button class="btn" type="button">Choose photo</button>';
@@ -288,7 +316,29 @@ heroImg.addEventListener('error', () => {
   };
   heroImg.style.display = 'none';
   heroImg.parentNode.appendChild(box);
+}
+function heroFailed(){
+  // phone photo missing -> use hero.png on phone too
+  const ph = document.getElementById('heroPhone');
+  if (ph && heroImg.currentSrc.includes('hero1')) {
+    ph.remove();
+    heroImg.style.objectPosition = '72% center';
+    heroImg.src = 'hero.png';
+    return;
+  }
+  heroFallback();
+}
+heroImg.addEventListener('error', heroFailed);
+// the image may already have failed before this script ran
+if (heroImg.complete && heroImg.naturalWidth === 0) heroFailed();
+
+/* Mobile menu */
+const menu = document.getElementById('menu'), links = document.getElementById('navlinks');
+menu.addEventListener('click', () => {
+  const open = links.classList.toggle('open');
+  menu.setAttribute('aria-expanded', open); menu.textContent = open ? '✕' : '☰';
 });
+links.addEventListener('click', e => { if (e.target.tagName === 'A') { links.classList.remove('open'); menu.textContent = '☰'; menu.setAttribute('aria-expanded', false); } });
 
 /* Video cards */
 function renderVideos(id, list){
